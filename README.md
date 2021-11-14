@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/lizmat/has-word/workflows/test/badge.svg)](https://github.com/lizmat/has-word/actions)
+
 NAME
 ====
 
