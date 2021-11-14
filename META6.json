@@ -1,0 +1,25 @@
+{
+  "auth": "zef:lizmat",
+  "authors": [
+    "Elizabeth Mattijsen"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "A quick non-regex word-boundary checker",
+  "license": "Artistic-2.0",
+  "name": "has-word",
+  "perl": "6.d",
+  "provides": {
+    "has-word": "lib/has-word.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}

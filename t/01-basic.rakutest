@@ -1,0 +1,20 @@
+use Test;
+use has-word;
+
+my @tests = (
+  "foobarbaz",   "foo", False,
+  "foo bar baz", "foo", True,
+  "foo:bar:baz", "bar", True,
+  "foo:bar:baz", "baz", True,
+);
+
+plan 2 * (@tests / 3);
+
+for @tests -> $haystack, $needle, $result {
+    is-deeply has-word($haystack, $needle             ), $result,
+      "'$needle' -> '$haystack': $result";
+    is-deeply has-word($haystack, $needle, :ignorecase), $result,
+      "'$needle' -> '$haystack' (ignore case): $result";
+}
+
+# vim: expandtab shiftwidth=4
