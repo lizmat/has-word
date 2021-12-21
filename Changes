@@ -2,5 +2,10 @@ Revision history for has-word
 
 {{$NEXT}}
 
+0.0.2  2021-12-21T14:38:13+01:00
+    - Add "find-all-words" functionality
+    - Add mention of :ignorecase functionality
+    - Add more tests
+
 0.0.1  2021-11-14T12:40:44+01:00
     - Initial version

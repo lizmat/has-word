@@ -1,20 +1,35 @@
 use Test;
 use has-word;
 
-my @tests = (
+my @has-word = (
   "foobarbaz",   "foo", False,
   "foo bar baz", "foo", True,
   "foo:bar:baz", "bar", True,
   "foo:bar:baz", "baz", True,
 );
 
-plan 2 * (@tests / 3);
+my @find-all-words = (
+  "foo bar foo baz bar zip", "foo", (my int @ = 0,8),
+);
 
-for @tests -> $haystack, $needle, $result {
+plan 3 * ((@has-word + @find-all-words) / 3);
+
+for @has-word -> $haystack, $needle, $result {
     is-deeply has-word($haystack, $needle             ), $result,
       "'$needle' -> '$haystack': $result";
-    is-deeply has-word($haystack, $needle, :ignorecase), $result,
-      "'$needle' -> '$haystack' (ignore case): $result";
+    is-deeply has-word($haystack, $needle.uc, :ignorecase), $result,
+      "'$needle.uc()' -> '$haystack' (ignore case): $result";
+    is-deeply has-word($haystack.uc, $needle, :ignorecase), $result,
+      "'$needle' -> '$haystack.uc()' (ignore case): $result";
+}
+
+for @find-all-words -> $haystack, $needle, $result {
+    is-deeply find-all-words($haystack, $needle             ), $result,
+      "'$needle' -> '$haystack': $result";
+    is-deeply find-all-words($haystack, $needle.uc, :ignorecase), $result,
+      "'$needle.uc()' -> '$haystack' (ignore case): $result";
+    is-deeply find-all-words($haystack.uc, $needle, :ignorecase), $result,
+      "'$needle' -> '$haystack.uc()' (ignore case): $result";
 }
 
 # vim: expandtab shiftwidth=4

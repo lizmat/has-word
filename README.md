@@ -11,16 +11,42 @@ SYNOPSIS
 ```raku
 use has-word;
 
-say has-word("foobarbaz", "foo");      # False
-say has-word("foo barbaz", "foo");     # True
-say has-word("foo::bar::baz", "bar");  # True
-say has-word("foo::bar::baz", "baz");  # True
+say has-word("foobarbaz", "foo");                   # False
+say has-word("foo barbaz", "foo");                  # True
+say has-word("foo::bar::baz", "bar");               # True
+say has-word("foo::bar::baz", "BAZ", :ignorecase);  # True
+
+.say for find-all-words("foo bar foo", "foo");      # 0␤8␤
 ```
 
 DESCRIPTION
 ===========
 
-The `has-word` module exports a single subroutine `has-word` that provides a quick way to see whether a string occurs as a "word" (defined as a number of alphanumeric characters surrounded by either non-alphanumeric characters or the beginning or end of the string. As such, it provides the equivalent of the `word ` functionality in regular expressions, but much faster and with a simpler way of checking for words that cannot be determined at compile time.
+The `has-word` module exports a two subroutines that provide a quick way to see whether a string occurs as a "word" (defined as a number of alphanumeric characters surrounded by either non-alphanumeric characters or the beginning or end of the string. As such, it provides the equivalent of the `word ` functionality in regular expressions, but much faster and with a simpler way of checking for words that cannot be determined at compile time.
+
+SUBROUTINES
+===========
+
+has-word
+--------
+
+```raku
+say has-word("foobarbaz", "foo");                   # False
+say has-word("foo barbaz", "foo");                  # True
+say has-word("foo::bar::baz", "bar");               # True
+say has-word("foo::bar::baz", "BAZ", :ignorecase);  # True
+```
+
+The `has-word` subroutine takes the haystack string as the first positional argument, and the needle string as the second positional argument. It also optionally takes a `:ignorecase` named argument to perform the search in a case-insensitive manner. It returns either `True` if found, or `False` if not.
+
+find-all-words
+--------------
+
+```raku
+.say for find-all-words("foo bar foo", "foo");      # 0␤8␤
+```
+
+The `find-all-words` subroutine takes the haystack string as the first positional argument, and the needle string as the second positional argument. It also optionally takes a `:ignorecase` named argument to perform the search in a case-insensitive manner. It returns a `List` of positions in the heystack string where the needle string was found.
 
 AUTHOR
 ======
