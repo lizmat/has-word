@@ -2,6 +2,12 @@ Revision history for has-word
 
 {{$NEXT}}
 
+0.0.3  2022-06-19T22:01:57+02:00
+    - Add support for :i as alternative to :ignorecase.
+    - Add support for :m / :ignoremark
+    - Add sponsor link
+    - Update copyright year
+
 0.0.2  2021-12-21T14:38:13+01:00
     - Add "find-all-words" functionality
     - Add mention of :ignorecase functionality
