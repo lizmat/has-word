@@ -1,6 +1,8 @@
 Revision history for has-word
 
 {{$NEXT}}
+
+0.0.4  2024-07-29T14:53:47+02:00
     - Update copyright year
     - Add separate CI badges for each OS
 
