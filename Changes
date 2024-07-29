@@ -1,11 +1,13 @@
 Revision history for has-word
 
 {{$NEXT}}
+    - Update copyright year
+    - Add separate CI badges for each OS
 
 0.0.3  2022-06-19T22:01:57+02:00
     - Add support for :i as alternative to :ignorecase.
     - Add support for :m / :ignoremark
-    - Add sponsor link
+    - Add sponsor button
     - Update copyright year
 
 0.0.2  2021-12-21T14:38:13+01:00

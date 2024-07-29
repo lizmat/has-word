@@ -310,7 +310,7 @@ Elizabeth Mattijsen <liz@raku.rocks>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2021, 2022 Elizabeth Mattijsen
+Copyright 2021, 2022, 2024 Elizabeth Mattijsen
 
 Source can be located at: https://github.com/lizmat/has-word .
 Comments and Pull Requests are welcome.
