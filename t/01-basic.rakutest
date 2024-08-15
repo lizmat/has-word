@@ -8,13 +8,17 @@ my @has-word = (
   "foo:bar:baz", "baz", True,
 );
 
+my @all-words = (
+  "foo bar foo baz bar zip", "foo", <foo foo>,
+);
+
 my @find-all-words = (
   "foo bar foo baz bar zip", "foo", (my int @ = 0,8),
 );
 
 my sub mööse(Str:D $string) { $string.subst("o", "ö", :g) }
 
-plan 5 * ((@has-word + @find-all-words) / 3);
+plan 5 * ((@has-word + @find-all-words + @all-words) / 3);
 
 for @has-word -> $haystack, $needle, $result {
     is-deeply has-word($haystack, $needle), $result,
@@ -27,6 +31,19 @@ for @has-word -> $haystack, $needle, $result {
       "'$needle.uc.&mööse()' -> '$haystack' (ignore case/mark): $result";
     is-deeply has-word($haystack.uc, $needle, :ignorecase), $result,
       "'$needle' -> '$haystack.uc()' (ignore case): $result";
+}
+
+for @all-words -> $haystack, $needle, $result {
+    is-deeply all-words($haystack, $needle), $result,
+      "'$needle' -> '$haystack': $result";
+    is-deeply all-words($haystack, $needle.uc, :ignorecase), $result,
+      "'$needle.uc()' -> '$haystack' (ignore case): $result";
+    is-deeply all-words($haystack, $needle.&mööse, :ignoremark), $result,
+      "'$needle.&mööse()' -> '$haystack' (ignore mark): $result";
+    is-deeply all-words($haystack, $needle.uc.&mööse, :i, :m), $result,
+      "'$needle.uc.&mööse()' -> '$haystack' (ignore case/mark): $result";
+    is-deeply all-words($haystack.uc, $needle, :ignorecase), $result.map(*.uc),
+      "'$needle' -> '$haystack.uc()' (ignore case): $result.map(*.uc)";
 }
 
 for @find-all-words -> $haystack, $needle, $result {

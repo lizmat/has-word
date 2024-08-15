@@ -17,6 +17,8 @@ say has-word("foo::bar::baz", "bar");               # True
 say has-word("foo::bar::baz", "BAZ", :ignorecase);  # True
 say has-word("foo::bar::báz", "baz", :ignoremark);  # True
 
+.say for all-words("foo bar FOO", "foo", :i);       # foo␤FOO␤
+
 .say for find-all-words("foo bar foo", "foo");      # 0␤8␤
 ```
 
@@ -41,6 +43,15 @@ say has-word("foo::bar::baz", "BAZ", :ignorecase);  # True
 The `has-word` subroutine takes the haystack string as the first positional argument, and the needle string as the second positional argument. It also optionally takes an `:ignorecase` (or `:i`) named argument to perform the search in a case-insensitive manner, and/or an `:ignoremark` (or `:m`) named argument to perform the search by only comparing the base characters.
 
 It returns either `True` if found, or `False` if not.
+
+all-words
+---------
+
+```raku
+.say for all-words("foo bar FOO", "foo", :i);      # foo␤FOO␤
+```
+
+The `all-words` subroutine takes the haystack string as the first positional argument, and the needle string as the second positional argument. It also optionally takes an `:ignorecase` (or `:i`) named argument to perform the search in a case-insensitive manner, and/or an `:ignoremark` (or `:m`) named argument to perform the search by only comparing base characters. It returns a `List` with the found strings (which can be different from the given needle if `:ignorecase` or `:ignoremark` were specified.
 
 find-all-words
 --------------

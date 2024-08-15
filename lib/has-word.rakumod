@@ -217,8 +217,8 @@ my sub wordicim(str $h, str $n --> Bool:D) {
 my sub find-all-words(
   Str:D $haystack,
   Str:D $needle,
-        :i(:$ignorecase),
-        :m(:$ignoremark),
+       :i(:$ignorecase),
+       :m(:$ignoremark),
 ) is export {
     my &finder := $ignorecase
       ?? $ignoremark ?? &find-wordicim !! &find-wordic
@@ -233,6 +233,20 @@ my sub find-all-words(
     );
 
     @positions
+}
+
+# externally visible all-words function
+my sub all-words(
+  str $haystack,
+  str $needle,
+     :i(:$ignorecase),
+     :m(:$ignoremark),
+) is export {
+
+    my int $chars = nqp::chars($needle);
+    find-all-words(
+      $haystack, $needle, :$ignorecase, :$ignoremark
+    ).map(-> int $i { nqp::substr($haystack,$i,$chars) }).List
 }
 
 =begin pod
@@ -252,6 +266,8 @@ say has-word("foo barbaz", "foo");                  # True
 say has-word("foo::bar::baz", "bar");               # True
 say has-word("foo::bar::baz", "BAZ", :ignorecase);  # True
 say has-word("foo::bar::báz", "baz", :ignoremark);  # True
+
+.say for all-words("foo bar FOO", "foo", :i);       # foo␤FOO␤
 
 .say for find-all-words("foo bar foo", "foo");      # 0␤8␤
 
@@ -287,6 +303,23 @@ search in a case-insensitive manner, and/or an C<:ignoremark> (or C<:m>) named
 argument to perform the search by only comparing the base characters.
 
 It returns either C<True> if found, or C<False> if not.
+
+=head2 all-words
+
+=begin code :lang<raku>
+
+.say for all-words("foo bar FOO", "foo", :i);      # foo␤FOO␤
+
+=end code
+
+The C<all-words> subroutine takes the haystack string as the first
+positional argument, and the needle string as the second positional
+argument.  It also optionally takes an C<:ignorecase> (or C<:i>) named
+argument to perform the search in a case-insensitive manner, and/or an
+C<:ignoremark> (or C<:m>) named argument to perform the search by only
+comparing base characters.  It returns a C<List> with the found strings
+(which can be different from the given needle if C<:ignorecase> or
+C<:ignoremark> were specified.
 
 =head2 find-all-words
 
