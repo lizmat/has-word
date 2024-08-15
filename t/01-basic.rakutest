@@ -33,7 +33,9 @@ for @has-word -> $haystack, $needle, $result {
       "'$needle' -> '$haystack.uc()' (ignore case): $result";
 }
 
-for @all-words -> $haystack, $needle, $result {
+for @all-words -> $haystack, $needle, $result is copy {
+    $result := $result.Slip;
+
     is-deeply all-words($haystack, $needle), $result,
       "'$needle' -> '$haystack': $result";
     is-deeply all-words($haystack, $needle.uc, :ignorecase), $result,
@@ -42,7 +44,8 @@ for @all-words -> $haystack, $needle, $result {
       "'$needle.&mööse()' -> '$haystack' (ignore mark): $result";
     is-deeply all-words($haystack, $needle.uc.&mööse, :i, :m), $result,
       "'$needle.uc.&mööse()' -> '$haystack' (ignore case/mark): $result";
-    is-deeply all-words($haystack.uc, $needle, :ignorecase), $result.map(*.uc),
+    is-deeply all-words($haystack.uc, $needle, :ignorecase),
+      $result.map(*.uc).Slip,
       "'$needle' -> '$haystack.uc()' (ignore case): $result.map(*.uc)";
 }
 

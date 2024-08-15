@@ -242,11 +242,23 @@ my sub all-words(
      :i(:$ignorecase),
      :m(:$ignoremark),
 ) is export {
-
+    my &finder := $ignorecase
+      ?? $ignoremark ?? &find-wordicim !! &find-wordic
+      !! $ignoremark ?? &find-wordim   !! &find-word;
     my int $chars = nqp::chars($needle);
-    find-all-words(
-      $haystack, $needle, :$ignorecase, :$ignoremark
-    ).map(-> int $i { nqp::substr($haystack,$i,$chars) }).List
+    my int $move  = $chars + 1;
+    my int $pos;
+    my $words := nqp::create(IterationBuffer);
+
+    nqp::until(
+      nqp::iseq_i(($pos = finder($haystack, $needle, $pos)),-1),
+      nqp::stmts(
+        nqp::push($words,nqp::substr($haystack,$pos,$chars)),
+        $pos = nqp::add_i($pos,$move)
+      )
+    );
+
+    $words.Slip
 }
 
 =begin pod
@@ -317,7 +329,7 @@ positional argument, and the needle string as the second positional
 argument.  It also optionally takes an C<:ignorecase> (or C<:i>) named
 argument to perform the search in a case-insensitive manner, and/or an
 C<:ignoremark> (or C<:m>) named argument to perform the search by only
-comparing base characters.  It returns a C<List> with the found strings
+comparing base characters.  It returns a C<Slip> with the found strings
 (which can be different from the given needle if C<:ignorecase> or
 C<:ignoremark> were specified.
 

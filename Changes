@@ -2,6 +2,9 @@ Revision history for has-word
 
 {{$NEXT}}
 
+0.0.6  2024-08-15T19:32:45+02:00
+    - Refactor "all-words" and make it return a Slip rather than a List
+
 0.0.5  2024-08-15T16:28:43+02:00
     - Add support for "all-words"
 
