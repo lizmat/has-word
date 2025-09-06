@@ -1,6 +1,8 @@
 Revision history for has-word
 
 {{$NEXT}}
+
+0.0.7  2025-09-06T12:21:37+02:00
     - Add selective importing feature and associated tests
     - 100% coverage testing
     - Updated copyright year
