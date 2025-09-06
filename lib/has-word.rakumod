@@ -1,6 +1,7 @@
 # Naughty bits used in this module for performance
 use nqp;
 
+#- helper subs -----------------------------------------------------------------
 # Fast non-regex checker where a string has word-boundaries
 my sub find-word(str $h, str $n, int $initial --> int) {
     my int $pos = $initial;
@@ -177,22 +178,6 @@ my sub find-wordicim(str $h, str $n, int $initial --> int) {
     $pos
 }
 
-# externally visible has-word function
-my sub has-word(
-  Str:D $haystack,
-  Str:D $needle,
-        :i(:$ignorecase),
-        :m(:$ignoremark),
---> Bool:D) is export {
-    $ignorecase
-      ?? $ignoremark
-        ?? wordicim($haystack, $needle)
-        !! wordic(  $haystack, $needle)
-      !! $ignoremark
-        ?? wordim($haystack, $needle)
-        !! word(  $haystack, $needle)
-}
-
 # Fast non-regex checker whether a string has word-boundaries
 my sub word(str $h, str $n --> Bool:D) {
     nqp::hllbool(nqp::isne_i(find-word($h, $n, 0),-1))
@@ -213,13 +198,31 @@ my sub wordicim(str $h, str $n --> Bool:D) {
     nqp::hllbool(nqp::isne_i(find-wordicim($h, $n, 0),-1))
 }
 
+#- has-word --------------------------------------------------------------------
+# externally visible has-word function
+my sub has-word(
+  Str:D $haystack,
+  Str:D $needle,
+        :i(:$ignorecase),
+        :m(:$ignoremark),
+--> Bool:D) {
+    $ignorecase
+      ?? $ignoremark
+        ?? wordicim($haystack, $needle)
+        !! wordic(  $haystack, $needle)
+      !! $ignoremark
+        ?? wordim($haystack, $needle)
+        !! word(  $haystack, $needle)
+}
+
+#- find-all-words --------------------------------------------------------------
 # externally visible find-all-words function
 my sub find-all-words(
   Str:D $haystack,
   Str:D $needle,
        :i(:$ignorecase),
        :m(:$ignoremark),
-) is export {
+) {
     my &finder := $ignorecase
       ?? $ignoremark ?? &find-wordicim !! &find-wordic
       !! $ignoremark ?? &find-wordim   !! &find-word;
@@ -235,13 +238,14 @@ my sub find-all-words(
     @positions
 }
 
+#- all-words -------------------------------------------------------------------
 # externally visible all-words function
 my sub all-words(
   str $haystack,
   str $needle,
      :i(:$ignorecase),
      :m(:$ignoremark),
-) is export {
+) {
     my &finder := $ignorecase
       ?? $ignoremark ?? &find-wordicim !! &find-wordic
       !! $ignoremark ?? &find-wordim   !! &find-word;
@@ -259,6 +263,32 @@ my sub all-words(
     );
 
     $words.Slip
+}
+
+#- EXPORT ----------------------------------------------------------------------
+my sub EXPORT(*@names) {
+    my constant %valid =
+      '&all-words'      => &all-words,
+      '&find-all-words' => &find-all-words,
+      '&has-word'       => &has-word,
+    ;
+
+    if @names {
+        Map.new: @names.map: {
+            if %valid{"&$_"} {
+                %valid{"&$_"}:p
+            }
+            else {
+                my ($in,$out) = .split(':', 2);
+                if $out && %valid{"&$in"} -> &code {
+                    Pair.new: "&$out", &code
+                }
+            }
+        }
+    }
+    else {
+        %valid
+    }
 }
 
 # vim: expandtab shiftwidth=4

@@ -1,7 +1,7 @@
 Revision history for has-word
 
 {{$NEXT}}
-    - Various modernizations
+    - Add selective importing feature and associated tests
     - 100% coverage testing
     - Updated copyright year
 

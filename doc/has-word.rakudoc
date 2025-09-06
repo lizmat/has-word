@@ -78,6 +78,28 @@ C<:ignoremark> (or C<:m>) named argument to perform the search by only
 comparing base characters.  It returns a C<List> of positions in the
 haystack string where the needle string was found.
 
+=head1 SELECTIVE IMPORTING
+
+=begin code :lang<raku>
+use has-word <find-all-words>;  # only import "find-all-words"
+=end code
+
+By default all three subroutines are exported.  But you can limit this
+to the subroutines you actually need by specifying the names in the
+C<use> statement.
+
+To prevent name collisions and/or import any subroutine with a more
+memorable name, one can use the "original-name:known-as" syntax.  A
+semi-colon in a specified string indicates the name by which the subroutine
+is known in this distribution, followed by the name with which it will be
+known in the lexical context in which the C<use> command is executed.
+
+=begin code :lang<raku>
+use has-word <has-word:includes>;  # import "has-word" as "includes"
+
+say includes "foo bar", "foo";  # True
+=end code
+
 =head1 AUTHOR
 
 Elizabeth Mattijsen <liz@raku.rocks>

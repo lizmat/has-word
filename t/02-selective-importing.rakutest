@@ -1,0 +1,27 @@
+use Test;
+
+my constant @subs = <all-words find-all-words has-word>;
+
+plan @subs + 2;
+
+my $code;
+for @subs {
+    $code ~= qq:!c:to/CODE/;
+    {
+        use has-word '$_';
+        ok MY::<&$_>:exists, "Did '$_' get exported?";
+    }
+    CODE
+}
+
+$code ~= qq:!c:to/CODE/;
+{
+    use has-word <has-word:includes>;
+    ok MY::<&includes>:exists, "Did 'includes' get exported?";
+    is MY::<&includes>.name, 'has-word', 'Was the original name "has-word"?';
+}
+CODE
+
+$code.EVAL;
+
+# vim: expandtab shiftwidth=4

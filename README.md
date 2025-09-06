@@ -62,6 +62,23 @@ find-all-words
 
 The `find-all-words` subroutine takes the haystack string as the first positional argument, and the needle string as the second positional argument. It also optionally takes an `:ignorecase` (or `:i`) named argument to perform the search in a case-insensitive manner, and/or an `:ignoremark` (or `:m`) named argument to perform the search by only comparing base characters. It returns a `List` of positions in the haystack string where the needle string was found.
 
+SELECTIVE IMPORTING
+===================
+
+```raku
+use has-word <find-all-words>;  # only import "find-all-words"
+```
+
+By default all three subroutines are exported. But you can limit this to the subroutines you actually need by specifying the names in the `use` statement.
+
+To prevent name collisions and/or import any subroutine with a more memorable name, one can use the "original-name:known-as" syntax. A semi-colon in a specified string indicates the name by which the subroutine is known in this distribution, followed by the name with which it will be known in the lexical context in which the `use` command is executed.
+
+```raku
+use has-word <has-word:includes>;  # import "has-word" as "includes"
+
+say includes "foo bar", "foo";  # True
+```
+
 AUTHOR
 ======
 
