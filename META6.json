@@ -10,13 +10,18 @@
   "description": "A quick non-regex word-boundary checker",
   "license": "Artistic-2.0",
   "name": "has-word",
-  "perl": "6.d",
   "provides": {
     "has-word": "lib/has-word.rakumod"
   },
+  "raku": "6.d",
   "resources": [
   ],
   "source-url": "https://github.com/lizmat/has-word.git",
+  "support": {
+    "bugtracker": "https://github.com/lizmat/has-word/issues",
+    "email": "liz@raku.rocks",
+    "source": "https://github.com/lizmat/has-word.git"
+  },
   "tags": [
     "NAUGHTY",
     "WORD",

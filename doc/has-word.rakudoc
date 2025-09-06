@@ -7,7 +7,6 @@ has-word - A quick non-regex word-boundary checker
 =head1 SYNOPSIS
 
 =begin code :lang<raku>
-
 use has-word;
 
 say has-word("foobarbaz", "foo");                   # False
@@ -19,7 +18,6 @@ say has-word("foo::bar::báz", "baz", :ignoremark);  # True
 .say for all-words("foo bar FOO", "foo", :i);       # foo␤FOO␤
 
 .say for find-all-words("foo bar foo", "foo");      # 0␤8␤
-
 =end code
 
 =head1 DESCRIPTION
@@ -37,12 +35,10 @@ time.
 =head2 has-word
 
 =begin code :lang<raku>
-
 say has-word("foobarbaz", "foo");                   # False
 say has-word("foo barbaz", "foo");                  # True
 say has-word("foo::bar::baz", "bar");               # True
 say has-word("foo::bar::baz", "BAZ", :ignorecase);  # True
-
 =end code
 
 The C<has-word> subroutine takes the haystack string as the first positional
@@ -56,9 +52,7 @@ It returns either C<True> if found, or C<False> if not.
 =head2 all-words
 
 =begin code :lang<raku>
-
 .say for all-words("foo bar FOO", "foo", :i);      # foo␤FOO␤
-
 =end code
 
 The C<all-words> subroutine takes the haystack string as the first
@@ -73,9 +67,7 @@ C<:ignoremark> were specified.
 =head2 find-all-words
 
 =begin code :lang<raku>
-
 .say for find-all-words("foo bar foo", "foo");      # 0␤8␤
-
 =end code
 
 The C<find-all-words> subroutine takes the haystack string as the first
